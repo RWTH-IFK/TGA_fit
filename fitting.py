@@ -11,7 +11,10 @@ class TGA_dataset:
         self.temp = None
 
 def calculate_process(scale, G, m, x):
-    return scale*(np.exp(G*(m-x)))/(1+np.exp(G*(m-x)))
+    raw_y = (np.exp(G*(m-0)))/(1+np.exp(G*(m-0)))
+    y = scale*(np.exp(G*(m-x)))/(1+np.exp(G*(m-x)))/raw_y
+
+    return y
 
 def calc_TGA(params, x, return_proccs = False):
     all_proc = list()

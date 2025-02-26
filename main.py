@@ -10,10 +10,9 @@ def do_fit(path):
     x_temp = False # if false x is time
     return_residual = True
     TGA_dataset = ff.TGA_dataset()
-    TGA_dataset.y_data, TGA_dataset.time, TGA_dataset.temp = prd.read_TGA(path, x_cutoff=190)
+    TGA_dataset.y_data, TGA_dataset.time, TGA_dataset.temp = prd.read_TGA(path, x_cutoff=186)
     end_weight = TGA_dataset.y_data[-10]
-    end_weight = 0.8260
-
+    end_weight = 0.8264
 
     #zoom
     # TGA_dataset.y_data, TGA_dataset.time, TGA_dataset.temp = prd.read_TGA(path, x_cutoff=50)
@@ -23,7 +22,7 @@ def do_fit(path):
     if x_temp:
         x_axis = TGA_dataset.temp
 
-    params = ff.create_params(7,end_weight,x_axis)
+    params = ff.create_params(5,end_weight,x_axis)
     TGA_dataset.y_data[:] = [x / 100 for x in TGA_dataset.y_data]
 
     num_iterations = 8000
@@ -72,7 +71,7 @@ if __name__ == '__main__':
     # do_fit(path)
     # plotting()
 
-    NP = calc.Nanoparticle(ligand_type = 'citrate',wt_NP=ufloat(82.64,0.5),wt_water=ufloat(5.46243,0.27), diameter_NP=ufloat(7,0.5) )
+    NP = calc.Nanoparticle(ligand_type = 'DEG',wt_NP=ufloat(82.64,0.5),wt_water=ufloat(5.46243,0.27), diameter_NP=ufloat(8,0.5) )
     NP.calculate_sphere()
     # NP.calculate_trunc_octahedron()
-    NP.generate_report(save=True)
+    NP.generate_report(save=False)
