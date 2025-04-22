@@ -35,6 +35,9 @@ class Nanoparticle():
         if composition_NP == 'Fe3O4':
             self.cryst_density = 5.1  # g/cm3
             self.molar_mass_NP = 231.533
+        if composition_NP == 'ZnO':
+            self.cryst_density = 5.6  # g/cm3
+            self.molar_mass_NP = 81.38
         # more cases for NP can be added here
         self.diameter_NP = diameter_NP  # nm
 

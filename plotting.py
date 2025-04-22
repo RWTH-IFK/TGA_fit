@@ -38,7 +38,7 @@ def plot_tga_ms(tga_file, ms_file,
     fig, (ax1, ax2) : tuple
         Figure and axes objects for further customization if needed
     """
-
+    plt.rcParams.update({'font.size': 18})
     # Read TGA data
     encodings = ['utf-8', 'latin1', 'iso-8859-1', 'cp1252']
     for encoding in encodings:
@@ -161,7 +161,7 @@ def plot_tga_ms(tga_file, ms_file,
         ax3 = ax1.twinx()
         ax3.spines.right.set_position(("axes", 1.1))
         color2 = 'red'
-        ax3.set_ylabel('Temp (K)', color=color3)
+        ax3.set_ylabel('Temp (C)', color=color3)
         line2 = ax3.plot(tga_data[tga_time_col], tga_data['Temp./°C'],
                          color=color3, label='Temp, C')
         ax3.tick_params(axis='y', labelcolor=color3)
