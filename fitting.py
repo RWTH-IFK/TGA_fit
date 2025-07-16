@@ -11,8 +11,13 @@ class TGA_dataset:
         self.temp = None
 
 def calculate_process(scale, G, m, x):
-    raw_y = (np.exp(G*(m-0)))/(1+np.exp(G*(m-0)))
-    y = scale*(np.exp(G*(m-x)))/(1+np.exp(G*(m-x)))/raw_y
+    scale_val = scale.value
+    m_val = m.value
+    G_val = G.value
+    x = np.asarray(x)
+    raw_y = (np.exp(G_val*(m_val-0)))/(1+np.exp(G_val*(m_val-0)))
+    top = (np.exp(G_val*(m_val-x)))/(1+np.exp(G_val*(m_val-x)))
+    y = scale_val*top/raw_y
 
     return y
 
@@ -73,6 +78,40 @@ def create_params(number, end_weight, x = None):
 
     return params
 
+
+def create_parameters_from_dict(initial_guesses):
+    """
+    Create lmfit Parameters from a dictionary of initial guesses.
+
+    Parameters:
+    -----------
+    initial_guesses : dict
+        Dictionary with parameter names as keys and either:
+        - single values (will be variable parameters)
+        - tuples/dicts with parameter specifications
+    """
+    params = lmf.Parameters()
+
+    for name, value in initial_guesses.items():
+        if name == 'bkg':
+            params.add(name, value=value, vary=False)
+        elif isinstance(value, dict):
+            # Full parameter specification
+            params.add(name, **value)
+        elif isinstance(value, (tuple, list)):
+            # Tuple format: (value, vary, min, max)
+            if len(value) == 1:
+                params.add(name, value=value[0])
+            elif len(value) == 2:
+                params.add(name, value=value[0], vary=value[1])
+            elif len(value) == 4:
+                params.add(name, value=value[0], vary=value[1],
+                           min=value[2], max=value[3])
+        else:
+            # Simple value
+            params.add(name, value=value, min = 0.0)
+
+    return params
 
 def chi2_calc(y_data, y_calc, err=None, return_residual=False):
     # chi2 = sum(((y_calc - y_data)/sig)^2)

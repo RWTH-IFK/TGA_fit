@@ -30,6 +30,8 @@ class Nanoparticle():
             self.lig_mol_mass = 189.123  # g/mol
         elif ligand_type == 'DEG':
             self.lig_mol_mass = 106.12  # g/mol
+        elif ligand_type == 'LA':
+            self.lig_mol_mass = 90.08  # g/mol
         # more cases for ligands can be added here
 
         if composition_NP == 'Fe3O4':

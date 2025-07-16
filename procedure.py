@@ -14,7 +14,7 @@ def read_TGA(tga_file, x_cutoff=None):
     tga_mass_col = 'Mass/%'
     tga_temp_col = 'Temp./°C'
     # Read TGA data
-    encodings = ['utf-8', 'latin1', 'iso-8859-1', 'cp1252']
+    encodings = ['UTF-16LE','utf-8-sig','utf-8', 'latin1', 'iso-8859-1', 'cp1252']
     for encoding in encodings:
         try:
             # Find the line number where the actual data starts and get header
@@ -197,8 +197,8 @@ def save_report(report, path='result/report.txt'):
         file.writelines(report)
 
 
-def plot_TEM_analysis(path, weight_area=False, remove_raws_from_end=4, distribution='both',
-                      fix_amplitude=False, fit_method='fit', use_simple_gaussian=False):
+def plot_TEM_analysis(path, weight_area=False, remove_raws_from_end=0, distribution='both',
+                      fix_amplitude=False, fit_method='fit', use_simple_gaussian=False, x_scale = [2,22]):
     """
     Analyze particle size distribution from TEM data.
     Parameters:
@@ -808,8 +808,9 @@ def plot_TEM_analysis(path, weight_area=False, remove_raws_from_end=4, distribut
     plt.figure(figsize=(15, 5))
     columns = 2
     n_bins = int(np.ceil(np.sqrt(len(sizes))))
-    x_min = 2
-    x_max = 17
+    if x_scale is not None:
+        x_min = x_scale[0]
+        x_max = x_scale[1]
 
     if weight_area:
         columns = 3
@@ -817,7 +818,8 @@ def plot_TEM_analysis(path, weight_area=False, remove_raws_from_end=4, distribut
     # Number-weighted
     plt.subplot(1, columns, 1)
     plt.hist(sizes, bins=n_bins, weights=weights_number, color='skyblue', edgecolor='black')
-    plt.xlim(x_min, x_max)
+    if x_scale is not None:
+        plt.xlim(x_min, x_max)
     add_mean_line(mean_number, std_number, 'blue')
 
     # Analyze and plot distributions for number-weighted
